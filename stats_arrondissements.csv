@@ -1,0 +1,199 @@
+arrondissement,couche,classe,nom,superficie_ha,pourcentage
+Abomey-Calavi,susceptibilite_2025,1,Très faible,3392.3,76.66
+Abomey-Calavi,susceptibilite_2025,2,Faible,410.1,9.27
+Abomey-Calavi,susceptibilite_2025,3,Moyenne,161.7,3.65
+Abomey-Calavi,susceptibilite_2025,4,Forte,116.3,2.63
+Abomey-Calavi,susceptibilite_2025,5,Très forte,344.8,7.79
+Abomey-Calavi,susceptibilite_2040,1,Très faible,3409.5,77.05
+Abomey-Calavi,susceptibilite_2040,2,Faible,394.1,8.9
+Abomey-Calavi,susceptibilite_2040,3,Moyenne,161.2,3.64
+Abomey-Calavi,susceptibilite_2040,4,Forte,116.1,2.62
+Abomey-Calavi,susceptibilite_2040,5,Très forte,344.4,7.78
+Abomey-Calavi,occupation_2025,1,Bâti,3064.6,69.25
+Abomey-Calavi,occupation_2025,2,Sols nus,286.3,6.47
+Abomey-Calavi,occupation_2025,3,Végétation,503.0,11.37
+Abomey-Calavi,occupation_2025,4,Zones humides,174.3,3.94
+Abomey-Calavi,occupation_2025,5,Eau libre,397.1,8.97
+Abomey-Calavi,occupation_2040,1,Bâti,3849.7,86.99
+Abomey-Calavi,occupation_2040,2,Sols nus,23.4,0.53
+Abomey-Calavi,occupation_2040,3,Végétation,17.6,0.4
+Abomey-Calavi,occupation_2040,4,Zones humides,134.2,3.03
+Abomey-Calavi,occupation_2040,5,Eau libre,400.4,9.05
+Abomey-Calavi,exposition_2025,0,Bâti en zones forte/très forte,39.1,8.49
+Abomey-Calavi,exposition_2040,0,Bâti en zones forte/très forte,65.7,14.24
+Akassato,susceptibilite_2025,1,Très faible,4124.9,46.03
+Akassato,susceptibilite_2025,2,Faible,1149.9,12.83
+Akassato,susceptibilite_2025,3,Moyenne,1468.8,16.39
+Akassato,susceptibilite_2025,4,Forte,1018.4,11.36
+Akassato,susceptibilite_2025,5,Très forte,1199.9,13.39
+Akassato,susceptibilite_2040,1,Très faible,4138.7,46.18
+Akassato,susceptibilite_2040,2,Faible,1139.1,12.71
+Akassato,susceptibilite_2040,3,Moyenne,1467.1,16.37
+Akassato,susceptibilite_2040,4,Forte,1017.7,11.36
+Akassato,susceptibilite_2040,5,Très forte,1199.2,13.38
+Akassato,occupation_2025,1,Bâti,2874.9,32.08
+Akassato,occupation_2025,2,Sols nus,314.5,3.51
+Akassato,occupation_2025,3,Végétation,2520.3,28.12
+Akassato,occupation_2025,4,Zones humides,3054.1,34.08
+Akassato,occupation_2025,5,Eau libre,197.9,2.21
+Akassato,occupation_2040,1,Bâti,4152.1,46.33
+Akassato,occupation_2040,2,Sols nus,54.4,0.61
+Akassato,occupation_2040,3,Végétation,1586.9,17.71
+Akassato,occupation_2040,4,Zones humides,2985.6,33.31
+Akassato,occupation_2040,5,Eau libre,182.8,2.04
+Akassato,exposition_2025,0,Bâti en zones forte/très forte,55.1,2.48
+Akassato,exposition_2040,0,Bâti en zones forte/très forte,115.5,5.21
+Glo-Djigbé,susceptibilite_2025,1,Très faible,5792.0,98.42
+Glo-Djigbé,susceptibilite_2025,2,Faible,88.5,1.5
+Glo-Djigbé,susceptibilite_2025,3,Moyenne,4.3,0.07
+Glo-Djigbé,susceptibilite_2025,4,Forte,0.0,0.0
+Glo-Djigbé,susceptibilite_2025,5,Très forte,0.0,0.0
+Glo-Djigbé,susceptibilite_2040,1,Très faible,5808.9,98.71
+Glo-Djigbé,susceptibilite_2040,2,Faible,71.9,1.22
+Glo-Djigbé,susceptibilite_2040,3,Moyenne,3.9,0.07
+Glo-Djigbé,susceptibilite_2040,4,Forte,0.0,0.0
+Glo-Djigbé,susceptibilite_2040,5,Très forte,0.0,0.0
+Glo-Djigbé,occupation_2025,1,Bâti,1655.8,28.14
+Glo-Djigbé,occupation_2025,2,Sols nus,136.1,2.31
+Glo-Djigbé,occupation_2025,3,Végétation,3932.8,66.83
+Glo-Djigbé,occupation_2025,4,Zones humides,122.5,2.08
+Glo-Djigbé,occupation_2025,5,Eau libre,37.6,0.64
+Glo-Djigbé,occupation_2040,1,Bâti,3127.6,53.15
+Glo-Djigbé,occupation_2040,2,Sols nus,46.5,0.79
+Glo-Djigbé,occupation_2040,3,Végétation,2681.6,45.57
+Glo-Djigbé,occupation_2040,4,Zones humides,1.7,0.03
+Glo-Djigbé,occupation_2040,5,Eau libre,27.4,0.47
+Glo-Djigbé,exposition_2025,0,Bâti en zones forte/très forte,0.0,0.0
+Glo-Djigbé,exposition_2040,0,Bâti en zones forte/très forte,0.0,0.0
+Godomey,susceptibilite_2025,1,Très faible,1690.6,26.71
+Godomey,susceptibilite_2025,2,Faible,1422.9,22.48
+Godomey,susceptibilite_2025,3,Moyenne,1193.4,18.85
+Godomey,susceptibilite_2025,4,Forte,980.8,15.5
+Godomey,susceptibilite_2025,5,Très forte,1041.6,16.46
+Godomey,susceptibilite_2040,1,Très faible,1722.5,27.21
+Godomey,susceptibilite_2040,2,Faible,1406.6,22.22
+Godomey,susceptibilite_2040,3,Moyenne,1195.8,18.89
+Godomey,susceptibilite_2040,4,Forte,971.2,15.34
+Godomey,susceptibilite_2040,5,Très forte,1033.2,16.32
+Godomey,occupation_2025,1,Bâti,3591.5,56.74
+Godomey,occupation_2025,2,Sols nus,281.7,4.45
+Godomey,occupation_2025,3,Végétation,703.8,11.12
+Godomey,occupation_2025,4,Zones humides,1082.2,17.1
+Godomey,occupation_2025,5,Eau libre,670.0,10.59
+Godomey,occupation_2040,1,Bâti,4772.3,75.4
+Godomey,occupation_2040,2,Sols nus,45.9,0.73
+Godomey,occupation_2040,3,Végétation,163.8,2.59
+Godomey,occupation_2040,4,Zones humides,682.1,10.78
+Godomey,occupation_2040,5,Eau libre,665.1,10.51
+Godomey,exposition_2025,0,Bâti en zones forte/très forte,707.4,34.98
+Godomey,exposition_2040,0,Bâti en zones forte/très forte,1129.5,55.85
+Hévié,susceptibilite_2025,1,Très faible,4278.7,80.12
+Hévié,susceptibilite_2025,2,Faible,483.4,9.05
+Hévié,susceptibilite_2025,3,Moyenne,255.1,4.78
+Hévié,susceptibilite_2025,4,Forte,135.0,2.53
+Hévié,susceptibilite_2025,5,Très forte,188.2,3.52
+Hévié,susceptibilite_2040,1,Très faible,4290.0,80.33
+Hévié,susceptibilite_2040,2,Faible,473.2,8.86
+Hévié,susceptibilite_2040,3,Moyenne,254.8,4.77
+Hévié,susceptibilite_2040,4,Forte,134.4,2.52
+Hévié,susceptibilite_2040,5,Très forte,188.1,3.52
+Hévié,occupation_2025,1,Bâti,2228.1,41.72
+Hévié,occupation_2025,2,Sols nus,128.0,2.4
+Hévié,occupation_2025,3,Végétation,2417.3,45.26
+Hévié,occupation_2025,4,Zones humides,175.5,3.29
+Hévié,occupation_2025,5,Eau libre,391.6,7.33
+Hévié,occupation_2040,1,Bâti,2763.5,51.75
+Hévié,occupation_2040,2,Sols nus,72.1,1.35
+Hévié,occupation_2040,3,Végétation,1985.9,37.19
+Hévié,occupation_2040,4,Zones humides,123.6,2.31
+Hévié,occupation_2040,5,Eau libre,395.5,7.41
+Hévié,exposition_2025,0,Bâti en zones forte/très forte,13.9,4.3
+Hévié,exposition_2040,0,Bâti en zones forte/très forte,25.1,7.78
+Kpanroun,susceptibilite_2025,1,Très faible,3037.2,61.98
+Kpanroun,susceptibilite_2025,2,Faible,667.0,13.61
+Kpanroun,susceptibilite_2025,3,Moyenne,525.5,10.72
+Kpanroun,susceptibilite_2025,4,Forte,416.4,8.5
+Kpanroun,susceptibilite_2025,5,Très forte,254.4,5.19
+Kpanroun,susceptibilite_2040,1,Très faible,3043.2,62.1
+Kpanroun,susceptibilite_2040,2,Faible,662.1,13.51
+Kpanroun,susceptibilite_2040,3,Moyenne,524.7,10.71
+Kpanroun,susceptibilite_2040,4,Forte,416.1,8.49
+Kpanroun,susceptibilite_2040,5,Très forte,254.5,5.19
+Kpanroun,occupation_2025,1,Bâti,626.9,12.79
+Kpanroun,occupation_2025,2,Sols nus,43.5,0.89
+Kpanroun,occupation_2025,3,Végétation,3456.7,70.54
+Kpanroun,occupation_2025,4,Zones humides,704.2,14.37
+Kpanroun,occupation_2025,5,Eau libre,69.3,1.41
+Kpanroun,occupation_2040,1,Bâti,647.4,13.21
+Kpanroun,occupation_2040,2,Sols nus,34.3,0.7
+Kpanroun,occupation_2040,3,Végétation,3522.9,71.89
+Kpanroun,occupation_2040,4,Zones humides,635.8,12.97
+Kpanroun,occupation_2040,5,Eau libre,60.2,1.23
+Kpanroun,exposition_2025,0,Bâti en zones forte/très forte,69.0,10.29
+Kpanroun,exposition_2040,0,Bâti en zones forte/très forte,70.8,10.56
+Ouèdo,susceptibilite_2025,1,Très faible,2589.5,87.25
+Ouèdo,susceptibilite_2025,2,Faible,134.6,4.54
+Ouèdo,susceptibilite_2025,3,Moyenne,82.4,2.78
+Ouèdo,susceptibilite_2025,4,Forte,71.5,2.41
+Ouèdo,susceptibilite_2025,5,Très forte,90.0,3.03
+Ouèdo,susceptibilite_2040,1,Très faible,2599.7,87.59
+Ouèdo,susceptibilite_2040,2,Faible,125.0,4.21
+Ouèdo,susceptibilite_2040,3,Moyenne,82.3,2.77
+Ouèdo,susceptibilite_2040,4,Forte,71.3,2.4
+Ouèdo,susceptibilite_2040,5,Très forte,89.8,3.02
+Ouèdo,occupation_2025,1,Bâti,1085.3,36.57
+Ouèdo,occupation_2025,2,Sols nus,260.3,8.77
+Ouèdo,occupation_2025,3,Végétation,1376.4,46.37
+Ouèdo,occupation_2025,4,Zones humides,63.5,2.14
+Ouèdo,occupation_2025,5,Eau libre,182.5,6.15
+Ouèdo,occupation_2040,1,Bâti,1845.9,62.19
+Ouèdo,occupation_2040,2,Sols nus,100.4,3.38
+Ouèdo,occupation_2040,3,Végétation,801.0,26.99
+Ouèdo,occupation_2040,4,Zones humides,36.1,1.22
+Ouèdo,occupation_2040,5,Eau libre,184.7,6.22
+Ouèdo,exposition_2025,0,Bâti en zones forte/très forte,2.2,1.37
+Ouèdo,exposition_2040,0,Bâti en zones forte/très forte,11.2,6.94
+Togba,susceptibilite_2025,1,Très faible,3774.0,86.66
+Togba,susceptibilite_2025,2,Faible,220.2,5.06
+Togba,susceptibilite_2025,3,Moyenne,109.9,2.52
+Togba,susceptibilite_2025,4,Forte,117.8,2.71
+Togba,susceptibilite_2025,5,Très forte,132.8,3.05
+Togba,susceptibilite_2040,1,Très faible,3787.7,86.98
+Togba,susceptibilite_2040,2,Faible,208.2,4.78
+Togba,susceptibilite_2040,3,Moyenne,109.7,2.52
+Togba,susceptibilite_2040,4,Forte,117.1,2.69
+Togba,susceptibilite_2040,5,Très forte,132.0,3.03
+Togba,occupation_2025,1,Bâti,2259.3,51.88
+Togba,occupation_2025,2,Sols nus,289.7,6.65
+Togba,occupation_2025,3,Végétation,1504.5,34.55
+Togba,occupation_2025,4,Zones humides,98.8,2.27
+Togba,occupation_2025,5,Eau libre,202.4,4.65
+Togba,occupation_2040,1,Bâti,3675.4,84.4
+Togba,occupation_2040,2,Sols nus,6.1,0.14
+Togba,occupation_2040,3,Végétation,416.2,9.56
+Togba,occupation_2040,4,Zones humides,50.6,1.16
+Togba,occupation_2040,5,Eau libre,206.5,4.74
+Togba,exposition_2025,0,Bâti en zones forte/très forte,10.8,4.33
+Togba,exposition_2040,0,Bâti en zones forte/très forte,42.4,16.9
+Zinvié,susceptibilite_2025,1,Très faible,2496.3,50.89
+Zinvié,susceptibilite_2025,2,Faible,699.4,14.26
+Zinvié,susceptibilite_2025,3,Moyenne,699.8,14.27
+Zinvié,susceptibilite_2025,4,Forte,538.4,10.98
+Zinvié,susceptibilite_2025,5,Très forte,471.1,9.61
+Zinvié,susceptibilite_2040,1,Très faible,2504.6,51.06
+Zinvié,susceptibilite_2040,2,Faible,692.4,14.12
+Zinvié,susceptibilite_2040,3,Moyenne,698.8,14.25
+Zinvié,susceptibilite_2040,4,Forte,538.3,10.97
+Zinvié,susceptibilite_2040,5,Très forte,471.0,9.6
+Zinvié,occupation_2025,1,Bâti,997.6,20.34
+Zinvié,occupation_2025,2,Sols nus,78.4,1.6
+Zinvié,occupation_2025,3,Végétation,2957.9,60.3
+Zinvié,occupation_2025,4,Zones humides,810.7,16.53
+Zinvié,occupation_2025,5,Eau libre,60.3,1.23
+Zinvié,occupation_2040,1,Bâti,1335.5,27.23
+Zinvié,occupation_2040,2,Sols nus,52.8,1.08
+Zinvié,occupation_2040,3,Végétation,2695.3,54.95
+Zinvié,occupation_2040,4,Zones humides,769.1,15.68
+Zinvié,occupation_2040,5,Eau libre,52.2,1.06
+Zinvié,exposition_2025,0,Bâti en zones forte/très forte,90.2,8.93
+Zinvié,exposition_2040,0,Bâti en zones forte/très forte,90.7,8.99

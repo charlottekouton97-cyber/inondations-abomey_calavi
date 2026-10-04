@@ -127,10 +127,13 @@ with onglet_carte:
                   delta_color="inverse", help=f"{expo['2040']['pct']} % de ces zones")
 
         st.markdown("**Télécharger la couche affichée**")
-        st.download_button("GeoJSON (WGS 84)", (DATA / f"{couche}.geojson").read_bytes(),
-                           file_name=f"{couche}.geojson", mime="application/geo+json")
-        st.download_button("Shapefile (UTM 31N, zip)", (DATA / f"{couche}_shp.zip").read_bytes(),
-                           file_name=f"{couche}_shp.zip", mime="application/zip")
+        f_geo, f_shp = DATA / f"{couche}.geojson", DATA / f"{couche}_shp.zip"
+        if f_geo.exists():
+            st.download_button("GeoJSON (WGS 84)", f_geo.read_bytes(),
+                               file_name=f_geo.name, mime="application/geo+json")
+        if f_shp.exists():
+            st.download_button("Shapefile (UTM 31N, zip)", f_shp.read_bytes(),
+                               file_name=f_shp.name, mime="application/zip")
 
 with onglet_prev:
     st.subheader("Que faire face au risque d'inondation ?")
