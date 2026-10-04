@@ -72,7 +72,8 @@ def emprise_arrondissement(nom):
 st.sidebar.title("Paramètres")
 theme = st.sidebar.radio("Carte", ["Susceptibilité aux inondations", "Occupation du sol"])
 annee = st.sidebar.radio("Année", ["2025", "2040"], horizontal=True)
-opacite = st.sidebar.slider("Opacité", 0.2, 1.0, 0.7, 0.1)
+opacite = st.sidebar.slider("Opacité", 0.2, 1.0, 1.0, 0.1)
+fond = st.sidebar.selectbox("Fond de carte", ["Clair (sans détails)", "OpenStreetMap", "Satellite"])
 noms_arr = sorted(f["properties"]["nom"] for f in arr_geo["features"]) if arr_dispo else []
 choix_arr = st.sidebar.selectbox("Arrondissement", ["Toute la commune"] + noms_arr)
 
@@ -97,7 +98,19 @@ with onglet_carte:
     c_carte, c_info = st.columns([3, 1.3])
 
     with c_carte:
-        m = folium.Map(tiles="OpenStreetMap", control_scale=True)
+        m = folium.Map(tiles=None, control_scale=True)
+        if fond == "OpenStreetMap":
+            folium.TileLayer("OpenStreetMap", name="OpenStreetMap").add_to(m)
+        elif fond == "Satellite":
+            folium.TileLayer(
+                tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                attr="Esri, Maxar, Earthstar Geographics", name="Satellite").add_to(m)
+        else:
+            folium.TileLayer("CartoDB positron", name="Clair").add_to(m)
+        # pixels nets : pas de mélange de couleurs quand l'image est réduite à l'écran
+        m.get_root().header.add_child(folium.Element(
+            "<style>.leaflet-image-layer{image-rendering:pixelated;"
+            "image-rendering:crisp-edges;}</style>"))
         folium.raster_layers.ImageOverlay(
             image=image_png(couche), bounds=meta["couches"][couche]["png_bounds"],
             opacity=opacite, name=f"{theme} {annee}", interactive=False, zindex=1,
@@ -118,7 +131,7 @@ with onglet_carte:
         m.fit_bounds(bbox)
         folium.LayerControl(collapsed=True).add_to(m)
         st_folium(m, height=620, use_container_width=True, returned_objects=[],
-                  key=f"{couche}_{choix_arr}_{opacite}")
+                  key=f"{couche}_{choix_arr}_{opacite}_{fond}")
 
     with c_info:
         st.subheader(choix_arr)
