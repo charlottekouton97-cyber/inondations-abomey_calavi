@@ -83,6 +83,11 @@ for k, (nom, coul) in pal.items():
     st.sidebar.markdown(
         f"<span style='display:inline-block;width:14px;height:14px;background:{coul};"
         f"border:1px solid #555;margin-right:6px'></span>{nom}", unsafe_allow_html=True)
+if meta.get("gris_affiche") and meta.get("non_modelise_ha", 0) > 0:
+    st.sidebar.markdown(
+        "<span style='display:inline-block;width:14px;height:14px;background:#bdbdbd;"
+        "border:1px solid #555;margin-right:6px'></span>Sans données (non modélisé)",
+        unsafe_allow_html=True)
 if annee == "2040":
     st.sidebar.caption("2040 : scénario tendanciel (projection de l'occupation du sol), "
                        "pas une observation.")
@@ -197,6 +202,9 @@ with onglet_info:
   (TerrSet). Les autres facteurs restent ceux de 2025.
 - **Occupation du sol** : classification Random Forest d'images Sentinel-2 (2025) et
   projection 2040.
+- La partie nord de la commune, située hors de l'emprise des variables du modèle,
+  n'a pas été prédite : elle est complétée à l'affichage par la classe du pixel
+  prédit le plus proche et n'entre pas dans les superficies.
 - Cartes affichées après un filtre majoritaire (statistique focale, fenêtre de 5 × 5
   pixels, soit 50 m) qui supprime les pixels isolés. Les fichiers téléchargeables sont
   en plus vectorisés et simplifiés (taches < 2 ha supprimées). Les superficies et
