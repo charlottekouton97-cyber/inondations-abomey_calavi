@@ -44,6 +44,26 @@ stats = lire_stats()
 arr_dispo = (DATA / "arrondissements.geojson").exists()
 arr_geo = lire_json("arrondissements.geojson") if arr_dispo else None
 
+def point_etiquette(f):
+    """[lat, lon] où écrire le nom : point fourni par meta.json, sinon centre de
+    gravité du plus grand contour du polygone."""
+    nom = f["properties"]["nom"]
+    if nom in meta.get("arr_label", {}):
+        return meta["arr_label"][nom]
+    g = f["geometry"]
+    polys = g["coordinates"] if g["type"] == "MultiPolygon" else [g["coordinates"]]
+    meilleur, aire_max = None, -1
+    for poly in polys:
+        x = [p[0] for p in poly[0]]; y = [p[1] for p in poly[0]]
+        a = cx = cy = 0.0
+        for i in range(len(x) - 1):
+            t = x[i] * y[i + 1] - x[i + 1] * y[i]
+            a += t; cx += (x[i] + x[i + 1]) * t; cy += (y[i] + y[i + 1]) * t
+        if abs(a) > aire_max and a != 0:
+            aire_max, meilleur = abs(a), [cy / (3 * a), cx / (3 * a)]
+    return meilleur
+
+
 def emprise_arrondissement(nom):
     """[[lat_min, lon_min], [lat_max, lon_max]] de l'arrondissement."""
     if nom in meta.get("arr_bbox", {}):
@@ -130,6 +150,15 @@ with onglet_carte:
                     "dashArray": None if f["properties"]["nom"] == choix_arr else "4 4"},
                 tooltip=folium.GeoJsonTooltip(fields=["nom"], aliases=["Arrondissement :"]),
             ).add_to(m)
+            for f in arr_geo["features"]:
+                pt = point_etiquette(f)
+                if pt:
+                    folium.Marker(pt, icon=folium.DivIcon(
+                        icon_size=(160, 20), icon_anchor=(80, 10),
+                        html=("<div style='text-align:center;font:600 13px Arial,sans-serif;"
+                              "color:#111;white-space:nowrap;text-shadow:"
+                              "-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff,"
+                              "0 0 3px #fff'>" + f["properties"]["nom"] + "</div>"))).add_to(m)
             if choix_arr != "Toute la commune":
                 bbox = emprise_arrondissement(choix_arr) or bbox
         m.fit_bounds(bbox)
