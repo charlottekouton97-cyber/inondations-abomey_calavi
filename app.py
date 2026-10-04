@@ -26,17 +26,14 @@ PALETTES = {
 }
 
 
-@st.cache_data
 def lire_json(nom):
     return json.loads((DATA / nom).read_text(encoding="utf-8"))
 
 
-@st.cache_data
 def image_png(nom):
     return "data:image/png;base64," + base64.b64encode((DATA / f"{nom}.png").read_bytes()).decode()
 
 
-@st.cache_data
 def lire_stats():
     f = DATA / "stats_arrondissements.csv"
     return pd.read_csv(f) if f.exists() else None
