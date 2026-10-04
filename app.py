@@ -47,10 +47,31 @@ stats = lire_stats()
 arr_dispo = (DATA / "arrondissements.geojson").exists()
 arr_geo = lire_json("arrondissements.geojson") if arr_dispo else None
 
+def emprise_arrondissement(nom):
+    """[[lat_min, lon_min], [lat_max, lon_max]] de l'arrondissement."""
+    if nom in meta.get("arr_bbox", {}):
+        return meta["arr_bbox"][nom]
+    f = next((f for f in arr_geo["features"] if f["properties"]["nom"] == nom), None)
+    if f is None:
+        return None
+    pts = []
+
+    def parcourir(c):
+        if isinstance(c[0], (int, float)):
+            pts.append(c)
+        else:
+            for x in c:
+                parcourir(x)
+
+    parcourir(f["geometry"]["coordinates"])
+    lons, lats = [p[0] for p in pts], [p[1] for p in pts]
+    return [[min(lats), min(lons)], [max(lats), max(lons)]]
+
+
 # ---------------- Barre latérale ----------------
 st.sidebar.title("Paramètres")
 theme = st.sidebar.radio("Carte", ["Susceptibilité aux inondations", "Occupation du sol"])
-annee = st.sidebar.select_slider("Année", options=["2025", "2040"], value="2025")
+annee = st.sidebar.radio("Année", ["2025", "2040"], horizontal=True)
 opacite = st.sidebar.slider("Opacité", 0.2, 1.0, 0.7, 0.1)
 noms_arr = sorted(f["properties"]["nom"] for f in arr_geo["features"]) if arr_dispo else []
 choix_arr = st.sidebar.selectbox("Arrondissement", ["Toute la commune"] + noms_arr)
@@ -93,8 +114,7 @@ with onglet_carte:
                 tooltip=folium.GeoJsonTooltip(fields=["nom"], aliases=["Arrondissement :"]),
             ).add_to(m)
             if choix_arr != "Toute la commune":
-                f_sel = next(f for f in arr_geo["features"] if f["properties"]["nom"] == choix_arr)
-                bbox = json.loads(f_sel["properties"]["bbox"])
+                bbox = emprise_arrondissement(choix_arr) or bbox
         m.fit_bounds(bbox)
         folium.LayerControl(collapsed=True).add_to(m)
         st_folium(m, height=620, use_container_width=True, returned_objects=[],
@@ -165,9 +185,10 @@ with onglet_info:
   (TerrSet). Les autres facteurs restent ceux de 2025.
 - **Occupation du sol** : classification Random Forest d'images Sentinel-2 (2025) et
   projection 2040.
-- Cartes affichées à la résolution d'origine (10 m). Les fichiers téléchargeables sont
-  vectorisés et simplifiés (taches < 2 ha supprimées). Les superficies sont calculées
-  sur les rasters à 10 m.
+- Cartes affichées après un filtre majoritaire (statistique focale, fenêtre de 5 × 5
+  pixels, soit 50 m) qui supprime les pixels isolés. Les fichiers téléchargeables sont
+  en plus vectorisés et simplifiés (taches < 2 ha supprimées). Les superficies et
+  pourcentages sont calculés sur les rasters à 10 m non filtrés.
 
 **Limites** : la susceptibilité traduit une prédisposition physique, pas une prévision
 d'événement. La carte 2040 est un scénario tendanciel. Échelle d'usage : communale ;
