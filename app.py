@@ -128,6 +128,7 @@ with onglet_carte:
     c_carte, c_info = st.columns([3, 1.3])
 
     with c_carte:
+      try:
         m = folium.Map(tiles=None, control_scale=True)
         if fond == "OpenStreetMap":
             folium.TileLayer("OpenStreetMap", name="OpenStreetMap").add_to(m)
@@ -173,8 +174,12 @@ with onglet_carte:
         folium.LayerControl(collapsed=True).add_to(m)
         st_folium(m, height=620, use_container_width=True, returned_objects=[],
                   key=f"{couche}_{choix_arr}_{opacite}_{fond}")
+      except Exception as err:
+        st.error("Erreur d'affichage de la carte")
+        st.exception(err)
 
     with c_info:
+      try:
         st.subheader(choix_arr)
         if choix_arr == "Toute la commune" or stats is None:
             if couche in SUSC_COMMUNE:
@@ -197,7 +202,7 @@ with onglet_carte:
             e = stats[stats.arrondissement == choix_arr].set_index("couche")
             expo = {a: {"ha": e.loc[f"exposition_{a}", "superficie_ha"],
                         "pct": e.loc[f"exposition_{a}", "pourcentage"]} for a in ("2025", "2040")}
-        st.dataframe(tab, hide_index=True, use_container_width=True)
+        st.dataframe(tab, hide_index=True)
 
         st.markdown("**Bâti en zones de susceptibilité forte ou très forte**")
         c1, c2 = st.columns(2)
@@ -215,6 +220,9 @@ with onglet_carte:
         if f_shp.exists():
             st.download_button("Shapefile (UTM 31N, zip)", f_shp.read_bytes(),
                                file_name=f_shp.name, mime="application/zip")
+      except Exception as err:
+        st.error("Erreur d'affichage du tableau")
+        st.exception(err)
 
 with onglet_prev:
     st.subheader("Que faire face au risque d'inondation ?")
