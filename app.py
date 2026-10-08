@@ -88,8 +88,8 @@ def emprise_arrondissement(nom):
 # Superficies de susceptibilité validées par l'encadreur (commune entière, ha).
 # Les pourcentages sont recalculés à partir des superficies.
 SUSC_COMMUNE = {
-    "susceptibilite_2025": [32076, 5598, 4434, 3550, 3993],
-    "susceptibilite_2040": [32226, 5488, 4414, 3540, 3983],
+    "susceptibilite_2025": [32460, 5342, 4533, 3465, 3851],
+    "susceptibilite_2040": [32593, 5235, 4530, 3453, 3840],
 }
 
 
@@ -128,6 +128,7 @@ with onglet_carte:
     c_carte, c_info = st.columns([3, 1.3])
 
     with c_carte:
+      try:
         m = folium.Map(tiles=None, control_scale=True)
         if fond == "OpenStreetMap":
             folium.TileLayer("OpenStreetMap", name="OpenStreetMap").add_to(m)
@@ -173,11 +174,15 @@ with onglet_carte:
         folium.LayerControl(collapsed=True).add_to(m)
         st_folium(m, height=620, use_container_width=True, returned_objects=[],
                   key=f"{couche}_{choix_arr}_{opacite}_{fond}")
+      except Exception as err:
+        st.error("Erreur d'affichage de la carte")
+        st.exception(err)
 
     with c_info:
+      try:
         st.subheader(choix_arr)
         if choix_arr == "Toute la commune" or stats is None:
-            if couche in SUSC_COMMUNE and not (meta.get("susc_corrige") or meta.get("commune_complete")):
+            if couche in SUSC_COMMUNE:
                 ha = SUSC_COMMUNE[couche]
                 tab = pd.DataFrame({"Classe": [pal[k][0] for k in range(1, 6)],
                                     "Superficie (ha)": ha,
@@ -197,7 +202,7 @@ with onglet_carte:
             e = stats[stats.arrondissement == choix_arr].set_index("couche")
             expo = {a: {"ha": e.loc[f"exposition_{a}", "superficie_ha"],
                         "pct": e.loc[f"exposition_{a}", "pourcentage"]} for a in ("2025", "2040")}
-        st.dataframe(tab, hide_index=True, use_container_width=True)
+        st.dataframe(tab, hide_index=True)
 
         st.markdown("**Bâti en zones de susceptibilité forte ou très forte**")
         c1, c2 = st.columns(2)
@@ -215,6 +220,9 @@ with onglet_carte:
         if f_shp.exists():
             st.download_button("Shapefile (UTM 31N, zip)", f_shp.read_bytes(),
                                file_name=f_shp.name, mime="application/zip")
+      except Exception as err:
+        st.error("Erreur d'affichage du tableau")
+        st.exception(err)
 
 with onglet_prev:
     st.subheader("Que faire face au risque d'inondation ?")
