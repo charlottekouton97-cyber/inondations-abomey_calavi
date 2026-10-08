@@ -90,6 +90,9 @@ def emprise_arrondissement(nom):
 SUSC_COMMUNE = {
     "susceptibilite_2025": [32460, 5342, 4533, 3465, 3851],
     "susceptibilite_2040": [32593, 5235, 4530, 3453, 3840],
+    # occupation du sol : valeurs de l'OS1 (TerrSet, 49 651,5 ha)
+    "occupation_2025": [19061.8, 1715.4, 20220.6, 6316.3, 2337.4],
+    "occupation_2040": [26956.6, 476.7, 14415.3, 5465.5, 2337.4],
 }
 
 
