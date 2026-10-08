@@ -258,13 +258,15 @@ with onglet_info:
   (TerrSet). Les autres facteurs restent ceux de 2025.
 - **Occupation du sol** : classification Random Forest d'images Sentinel-2 (2025) et
   projection 2040.
-- La partie nord de la commune, située hors de l'emprise des variables du modèle,
-  n'a pas été prédite : elle est complétée à l'affichage par la classe du pixel
-  prédit le plus proche et n'entre pas dans les superficies.
+- Les pixels non prédits par le modèle (vides isolés et bordures de la commune) ont reçu
+  la classe du pixel prédit le plus proche, afin de couvrir toute la commune (49 651 ha).
+  Les superficies présentées portent sur la commune entière.
+- Les superficies d'occupation du sol reprennent celles de l'analyse Land Change Modeler
+  (TerrSet).
 - Cartes affichées après un filtre majoritaire (statistique focale, fenêtre de 5 × 5
-  pixels, soit 50 m) qui supprime les pixels isolés. Les fichiers téléchargeables sont
-  en plus vectorisés et simplifiés (taches < 2 ha supprimées). Les superficies et
-  pourcentages sont calculés sur les rasters à 10 m non filtrés.
+  pixels, soit 50 m) qui supprime les pixels isolés ; ce lissage ne modifie aucune
+  superficie. Les fichiers téléchargeables sont vectorisés et simplifiés (taches
+  de moins de 2 ha supprimées).
 
 **Limites** : la susceptibilité traduit une prédisposition physique, pas une prévision
 d'événement. La carte 2040 est un scénario tendanciel. Échelle d'usage : communale ;
