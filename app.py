@@ -19,7 +19,7 @@ ICI = Path(__file__).parent
 DATA = ICI / "data" if (ICI / "data" / "meta.json").exists() else ICI
 
 PALETTES = {
-    "susc": {1: ("Très faible", "#1a9641"), 2: ("Faible", "#a6d96a"), 3: ("Moyenne", "#ffffbf"),
+    "susc": {1: ("Très faible", "#1a9641"), 2: ("Faible", "#a6d96a"), 3: ("Modérée", "#ffffbf"),
              4: ("Forte", "#fdae61"), 5: ("Très forte", "#d7191c")},
     "lulc": {1: ("Bâti", "#e31a1c"), 2: ("Sols nus", "#fdbf6f"), 3: ("Végétation", "#33a02c"),
              4: ("Zones humides", "#a6cee3"), 5: ("Eau libre", "#1f78b4")},
@@ -83,6 +83,14 @@ def emprise_arrondissement(nom):
     parcourir(f["geometry"]["coordinates"])
     lons, lats = [p[0] for p in pts], [p[1] for p in pts]
     return [[min(lats), min(lons)], [max(lats), max(lons)]]
+
+
+# Superficies de susceptibilité validées par l'encadreur (commune entière, ha).
+# Les pourcentages sont recalculés à partir des superficies.
+SUSC_COMMUNE = {
+    "susceptibilite_2025": [32076, 5598, 4434, 3550, 3993],
+    "susceptibilite_2040": [32226, 5488, 4414, 3540, 3983],
+}
 
 
 # ---------------- Barre latérale ----------------
@@ -169,16 +177,23 @@ with onglet_carte:
     with c_info:
         st.subheader(choix_arr)
         if choix_arr == "Toute la commune" or stats is None:
-            sup = meta["couches"][couche]["superficie_ha"]
-            pct = meta["couches"][couche]["pourcentage"]
-            tab = pd.DataFrame({"Classe": [pal[int(k)][0] for k in sup],
-                                "Superficie (ha)": list(sup.values()),
-                                "%": list(pct.values())})
+            if couche in SUSC_COMMUNE and not (meta.get("susc_corrige") or meta.get("commune_complete")):
+                ha = SUSC_COMMUNE[couche]
+                tab = pd.DataFrame({"Classe": [pal[k][0] for k in range(1, 6)],
+                                    "Superficie (ha)": ha,
+                                    "%": [round(100 * x / sum(ha), 2) for x in ha]})
+            else:
+                sup = meta["couches"][couche]["superficie_ha"]
+                ha = [round(v) for v in sup.values()]
+                tab = pd.DataFrame({"Classe": [pal[int(k)][0] for k in sup],
+                                    "Superficie (ha)": ha,
+                                    "%": [round(100 * x / sum(ha), 2) for x in ha]})
             expo = {a: meta[f"exposition_{a}"] for a in ("2025", "2040")}
         else:
             s = stats[(stats.arrondissement == choix_arr) & (stats.couche == couche)]
             tab = s[["nom", "superficie_ha", "pourcentage"]].rename(
                 columns={"nom": "Classe", "superficie_ha": "Superficie (ha)", "pourcentage": "%"})
+            tab["Classe"] = tab["Classe"].replace({"Moyenne": "Modérée"})
             e = stats[stats.arrondissement == choix_arr].set_index("couche")
             expo = {a: {"ha": e.loc[f"exposition_{a}", "superficie_ha"],
                         "pct": e.loc[f"exposition_{a}", "pourcentage"]} for a in ("2025", "2040")}
