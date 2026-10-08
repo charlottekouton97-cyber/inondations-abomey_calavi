@@ -88,8 +88,8 @@ def emprise_arrondissement(nom):
 # Superficies de susceptibilité validées par l'encadreur (commune entière, ha).
 # Les pourcentages sont recalculés à partir des superficies.
 SUSC_COMMUNE = {
-    "susceptibilite_2025": [32076, 5598, 4434, 3550, 3993],
-    "susceptibilite_2040": [32226, 5488, 4414, 3540, 3983],
+    "susceptibilite_2025": [32460, 5342, 4533, 3465, 3851],
+    "susceptibilite_2040": [32593, 5235, 4530, 3453, 3840],
 }
 
 
@@ -177,7 +177,7 @@ with onglet_carte:
     with c_info:
         st.subheader(choix_arr)
         if choix_arr == "Toute la commune" or stats is None:
-            if couche in SUSC_COMMUNE and not (meta.get("susc_corrige") or meta.get("commune_complete")):
+            if couche in SUSC_COMMUNE:
                 ha = SUSC_COMMUNE[couche]
                 tab = pd.DataFrame({"Classe": [pal[k][0] for k in range(1, 6)],
                                     "Superficie (ha)": ha,
