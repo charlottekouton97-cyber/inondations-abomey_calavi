@@ -21,8 +21,8 @@ DATA = ICI / "data" if (ICI / "data" / "meta.json").exists() else ICI
 PALETTES = {
     "susc": {1: ("Très faible", "#1a9641"), 2: ("Faible", "#a6d96a"), 3: ("Modérée", "#ffffbf"),
              4: ("Forte", "#fdae61"), 5: ("Très forte", "#d7191c")},
-    "lulc": {1: ("Bâti", "#e31a1c"), 2: ("Sols nus", "#fdbf6f"), 3: ("Végétation", "#33a02c"),
-             4: ("Zones humides", "#a6cee3"), 5: ("Eau libre", "#1f78b4")},
+    "lulc": {1: ("Agglomérations", "#e31a1c"), 2: ("Sols nus", "#fdbf6f"), 3: ("Végétation", "#33a02c"),
+             4: ("Zones humides", "#a6cee3"), 5: ("Plan d'eau", "#1f78b4")},
 }
 
 
@@ -198,13 +198,14 @@ with onglet_carte:
             s = stats[(stats.arrondissement == choix_arr) & (stats.couche == couche)]
             tab = s[["nom", "superficie_ha", "pourcentage"]].rename(
                 columns={"nom": "Classe", "superficie_ha": "Superficie (ha)", "pourcentage": "%"})
-            tab["Classe"] = tab["Classe"].replace({"Moyenne": "Modérée"})
+            tab["Classe"] = tab["Classe"].replace({"Moyenne": "Modérée", "Bâti": "Agglomérations",
+                                                   "Eau libre": "Plan d'eau"})
             e = stats[stats.arrondissement == choix_arr].set_index("couche")
             expo = {a: {"ha": e.loc[f"exposition_{a}", "superficie_ha"],
                         "pct": e.loc[f"exposition_{a}", "pourcentage"]} for a in ("2025", "2040")}
         st.dataframe(tab, hide_index=True)
 
-        st.markdown("**Bâti en zones de susceptibilité forte ou très forte**")
+        st.markdown("**Agglomérations en zones de susceptibilité forte ou très forte**")
         c1, c2 = st.columns(2)
         c1.metric("2025", f"{expo['2025']['ha']:,.0f} ha".replace(",", " "),
                   help=f"{expo['2025']['pct']} % de ces zones")
