@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Plateforme web – Susceptibilité aux inondations, commune d'Abomey-Calavi
-Streamlit + Folium. Données dans le dossier data/ (produit par
-OS3_preparation_couches_web.py).
+Streamlit + Folium. Données dans le dossier data/ ou à côté de app.py (produites par
+OS3_preparation_couches_web_v2.py). Version révisée : susceptibilité Random Forest 2025 et
+2040, occupation du sol 2025 et 2040 en 4 classes, limites des arrondissements.
 """
 import base64
 import json
@@ -21,9 +22,11 @@ DATA = ICI / "data" if (ICI / "data" / "meta.json").exists() else ICI
 PALETTES = {
     "susc": {1: ("Très faible", "#1a9641"), 2: ("Faible", "#a6d96a"), 3: ("Modérée", "#ffffbf"),
              4: ("Forte", "#fdae61"), 5: ("Très forte", "#d7191c")},
-    "lulc": {1: ("Agglomérations", "#e31a1c"), 2: ("Sols nus", "#fdbf6f"), 3: ("Végétation", "#33a02c"),
-             4: ("Zones humides", "#a6cee3"), 5: ("Plan d'eau", "#1f78b4")},
+    "lulc": {1: ("Agglomération", "#e31a1c"), 3: ("Végétation", "#33a02c"),
+             4: ("Zones humides", "#a6cee3"), 5: ("Eau libre", "#1f78b4")},
 }
+THEMES = {"Susceptibilité aux inondations": "susceptibilite_",
+          "Occupation du sol": "occupation_"}
 
 
 def lire_json(nom):
@@ -85,27 +88,16 @@ def emprise_arrondissement(nom):
     return [[min(lats), min(lons)], [max(lats), max(lons)]]
 
 
-# Superficies de susceptibilité validées par l'encadreur (commune entière, ha).
-# Les pourcentages sont recalculés à partir des superficies.
-SUSC_COMMUNE = {
-    "susceptibilite_2025": [32460, 5342, 4533, 3465, 3851],
-    "susceptibilite_2040": [32593, 5235, 4530, 3453, 3840],
-    # occupation du sol : valeurs de l'OS1 (TerrSet, 49 651,5 ha)
-    "occupation_2025": [19061.8, 1715.4, 20220.6, 6316.3, 2337.4],
-    "occupation_2040": [26956.6, 476.7, 14415.3, 5465.5, 2337.4],
-}
-
-
 # ---------------- Barre latérale ----------------
 st.sidebar.title("Paramètres")
-theme = st.sidebar.radio("Carte", ["Susceptibilité aux inondations", "Occupation du sol"])
+theme = st.sidebar.radio("Carte", list(THEMES))
 annee = st.sidebar.radio("Année", ["2025", "2040"], horizontal=True)
 opacite = st.sidebar.slider("Opacité", 0.2, 1.0, 1.0, 0.1)
 fond = st.sidebar.selectbox("Fond de carte", ["Clair (sans détails)", "OpenStreetMap", "Satellite"])
 noms_arr = sorted(f["properties"]["nom"] for f in arr_geo["features"]) if arr_dispo else []
 choix_arr = st.sidebar.selectbox("Arrondissement", ["Toute la commune"] + noms_arr)
 
-couche = ("susceptibilite_" if theme.startswith("Susc") else "occupation_") + annee
+couche = THEMES[theme] + annee
 typ = meta["couches"][couche]["type"]
 pal = PALETTES[typ]
 
@@ -184,37 +176,34 @@ with onglet_carte:
     with c_info:
       try:
         st.subheader(choix_arr)
+        # exposition : agglomération en susceptibilité forte ou très forte (zones de 2025 fixes)
+        cle_expo = "exposition"
+        titre_expo = "Agglomération en susceptibilité forte ou très forte (zones de 2025)" 
         if choix_arr == "Toute la commune" or stats is None:
-            if couche in SUSC_COMMUNE:
-                ha = SUSC_COMMUNE[couche]
-                tab = pd.DataFrame({"Classe": [pal[k][0] for k in range(1, 6)],
-                                    "Superficie (ha)": ha,
-                                    "%": [round(100 * x / sum(ha), 2) for x in ha]})
-            else:
-                sup = meta["couches"][couche]["superficie_ha"]
-                ha = [round(v) for v in sup.values()]
-                tab = pd.DataFrame({"Classe": [pal[int(k)][0] for k in sup],
-                                    "Superficie (ha)": ha,
-                                    "%": [round(100 * x / sum(ha), 2) for x in ha]})
-            expo = {a: meta[f"exposition_{a}"] for a in ("2025", "2040")}
+            sup = meta["couches"][couche]["superficie_ha"]
+            pct = meta["couches"][couche]["pourcentage"]
+            tab = pd.DataFrame({"Classe": [pal[int(k)][0] for k in sup],
+                                "Superficie (ha)": [round(v) for v in sup.values()],
+                                "%": [pct[k] for k in sup]})
+            expo = {a: meta[f"{cle_expo}_{a}"] for a in ("2025", "2040")}
         else:
             s = stats[(stats.arrondissement == choix_arr) & (stats.couche == couche)]
             tab = s[["nom", "superficie_ha", "pourcentage"]].rename(
                 columns={"nom": "Classe", "superficie_ha": "Superficie (ha)", "pourcentage": "%"})
-            tab["Classe"] = tab["Classe"].replace({"Moyenne": "Modérée", "Bâti": "Agglomérations",
-                                                   "Eau libre": "Plan d'eau"})
             e = stats[stats.arrondissement == choix_arr].set_index("couche")
-            expo = {a: {"ha": e.loc[f"exposition_{a}", "superficie_ha"],
-                        "pct": e.loc[f"exposition_{a}", "pourcentage"]} for a in ("2025", "2040")}
+            expo = {a: {"ha": e.loc[f"{cle_expo}_{a}", "superficie_ha"],
+                        "pct": e.loc[f"{cle_expo}_{a}", "pourcentage"]} for a in ("2025", "2040")}
         st.dataframe(tab, hide_index=True)
+        if choix_arr == "Toute la commune":
+            st.caption("Superficies ramenées à la superficie de la commune (49 583 ha).")
 
-        st.markdown("**Agglomérations en zones de susceptibilité forte ou très forte**")
+        st.markdown(f"**{titre_expo}**")
         c1, c2 = st.columns(2)
         c1.metric("2025", f"{expo['2025']['ha']:,.0f} ha".replace(",", " "),
-                  help=f"{expo['2025']['pct']} % de ces zones")
+                  help=f"{expo['2025']['pct']} % de l'agglomération")
         c2.metric("2040", f"{expo['2040']['ha']:,.0f} ha".replace(",", " "),
                   delta=f"{expo['2040']['ha'] - expo['2025']['ha']:+,.0f} ha".replace(",", " "),
-                  delta_color="inverse", help=f"{expo['2040']['pct']} % de ces zones")
+                  delta_color="inverse", help=f"{expo['2040']['pct']} % de l'agglomération")
 
         st.markdown("**Télécharger la couche affichée**")
         f_geo, f_shp = DATA / f"{couche}.geojson", DATA / f"{couche}_shp.zip"
@@ -251,22 +240,22 @@ with onglet_prev:
 with onglet_info:
     st.subheader("Méthode")
     st.markdown("""
-- **Susceptibilité** : modèle Random Forest entraîné sur 400 points (200 inondés, 200 non
-  inondés) et 13 facteurs (topographie, hydrologie, végétation, occupation du sol, sols,
-  pluviométrie). AUC sur le jeu de test : 0,979. Cinq classes par la méthode de Jenks.
+- **Susceptibilité** : modèle Random Forest entraîné sur 370 points (185 sites inondés relevés sur
+  le terrain et 185 pseudo-absences) et 13 facteurs (topographie, hydrologie, végétation,
+  occupation du sol, sols, pluviométrie). AUC : 0,959 sur le jeu de test et 0,959 en
+  validation croisée par blocs spatiaux ; le Random Forest l'emporte sur l'analyse
+  multicritère AHP (0,908). Cinq classes par la méthode de Jenks.
 - **2040** : même modèle appliqué à l'occupation du sol projetée par le Land Change Modeler
-  (TerrSet). Les autres facteurs restent ceux de 2025.
-- **Occupation du sol** : classification Random Forest d'images Sentinel-2 (2025) et
-  projection 2040.
-- Les pixels non prédits par le modèle (vides isolés et bordures de la commune) ont reçu
-  la classe du pixel prédit le plus proche, afin de couvrir toute la commune (49 651 ha).
-  Les superficies présentées portent sur la commune entière.
-- Les superficies d'occupation du sol reprennent celles de l'analyse Land Change Modeler
-  (TerrSet).
-- Cartes affichées après un filtre majoritaire (statistique focale, fenêtre de 5 × 5
-  pixels, soit 50 m) qui supprime les pixels isolés ; ce lissage ne modifie aucune
-  superficie. Les fichiers téléchargeables sont vectorisés et simplifiés (taches
-  de moins de 2 ha supprimées).
+  (TerrSet, scénario tendanciel), avec les seuils de classes de 2025. Les autres facteurs
+  restent ceux de 2025.
+- **Occupation du sol** : classification Random Forest d'images Sentinel-2 en quatre classes
+  (précision globale de 77,7 % en 2025, validation par blocs spatiaux) et projection 2040.
+- Les pixels non modélisés (petits vides et pointe nord, environ 3 % de la commune) ont été
+  complétés par interpolation du score continu, puis classés avec les mêmes seuils. Les
+  superficies portent sur la commune entière et sont ramenées à sa superficie de 49 583 ha.
+- Cartes affichées après un filtre majoritaire (fenêtre de 5 × 5 pixels, soit 50 m) qui
+  supprime les pixels isolés ; ce lissage ne modifie pas les superficies présentées. Les
+  fichiers téléchargeables sont vectorisés et simplifiés (taches de moins de 2 ha supprimées).
 
 **Limites** : la susceptibilité traduit une prédisposition physique, pas une prévision
 d'événement. La carte 2040 est un scénario tendanciel. Échelle d'usage : communale ;
