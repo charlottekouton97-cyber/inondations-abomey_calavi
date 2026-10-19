@@ -194,8 +194,6 @@ with onglet_carte:
             expo = {a: {"ha": e.loc[f"{cle_expo}_{a}", "superficie_ha"],
                         "pct": e.loc[f"{cle_expo}_{a}", "pourcentage"]} for a in ("2025", "2040")}
         st.dataframe(tab, hide_index=True)
-        if choix_arr == "Toute la commune":
-            st.caption("Superficies ramenées à la superficie de la commune (49 583 ha).")
 
         st.markdown(f"**{titre_expo}**")
         c1, c2 = st.columns(2)
@@ -250,12 +248,6 @@ with onglet_info:
   restent ceux de 2025.
 - **Occupation du sol** : classification Random Forest d'images Sentinel-2 en quatre classes
   (précision globale de 77,7 % en 2025, validation par blocs spatiaux) et projection 2040.
-- Les pixels non modélisés (petits vides et pointe nord, environ 3 % de la commune) ont été
-  complétés par interpolation du score continu, puis classés avec les mêmes seuils. Les
-  superficies portent sur la commune entière et sont ramenées à sa superficie de 49 583 ha.
-- Cartes affichées après un filtre majoritaire (fenêtre de 5 × 5 pixels, soit 50 m) qui
-  supprime les pixels isolés ; ce lissage ne modifie pas les superficies présentées. Les
-  fichiers téléchargeables sont vectorisés et simplifiés (taches de moins de 2 ha supprimées).
 
 **Limites** : la susceptibilité traduit une prédisposition physique, pas une prévision
 d'événement. La carte 2040 est un scénario tendanciel. Échelle d'usage : communale ;
